@@ -4,6 +4,10 @@ public class ArcadeGame implements Keypad{
 	
 	private int mode;
 	
+//	public ArcadeGame() {
+//		mode = Keypad.NORMAL_MODE;
+//		System.out.println("ArcadeGame 실행");
+//	}
 	@Override
 	public void turnOn() {
 		System.out.println("ArcadeGame 실행");
@@ -23,7 +27,7 @@ public class ArcadeGame implements Keypad{
 	public void rightUpButton() {
 		if(mode == 0) {
 			System.out.println("캐릭터가 일반 공격");
-		}else {
+		}else if(mode ==1) {
 			System.out.println("캐릭터가 연속 공격");
 		}
 	}
@@ -32,7 +36,7 @@ public class ArcadeGame implements Keypad{
 	public void rightDownButton() {
 		if(mode == 0) {
 			System.out.println("캐릭터가 HIT 공격");
-		}else {
+		}else if(mode == 1) {
 			System.out.println("캐릭터가 Double HIT 공격");
 		}
 	}
@@ -45,8 +49,6 @@ public class ArcadeGame implements Keypad{
 		}else if(mode == 1) {
 			this.mode = Keypad.HARD_MODE;
 			System.out.println("현재 모드 : HARD_MODE");
-		}else {
-			this.mode = 0;
 		}
 	}
 	

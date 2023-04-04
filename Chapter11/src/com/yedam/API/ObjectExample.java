@@ -28,5 +28,16 @@ public class ObjectExample {
 		String value2 = hashMap2.get(new Member("열쇠"));
 		
 		System.out.println(value2);
+		
+		System.out.println("===============================");
+		
+		Object obj = new Object();
+		
+		System.out.println(obj.toString());
+		
+		System.out.println(member);
+		System.out.println(member2); //toString이 생략되어있다
+		System.out.println(member3.toString());
+		
 	}
 }

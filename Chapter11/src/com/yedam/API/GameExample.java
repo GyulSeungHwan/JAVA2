@@ -27,6 +27,5 @@ public class GameExample {
 		rc.rightUpButton();
 		rc.leftUpButton();
 		rc.rightDownButton();
-		
 	}
 }
