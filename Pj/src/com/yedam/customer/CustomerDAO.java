@@ -48,7 +48,7 @@ public class CustomerDAO extends DAO {
 	}
 	
 	
-	//회원 전체 조회, 매출(?)
+	//회원 전체 조회
 	public List<Customer> getCustomerList() {
 		List<Customer> list = new ArrayList<>();
 		
@@ -74,7 +74,6 @@ public class CustomerDAO extends DAO {
 				
 				list.add(customer);
 			}
-			
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -117,7 +116,7 @@ public class CustomerDAO extends DAO {
 		int result = 0;
 		try {
 			conn();
-			String sql = "INTSERT INTO customer VALUES (?, ?, ?, ?, ?, ?, 'B')";
+			String sql = "INSERT INTO customer VALUES (?, ?, ?, ?, ?, ?, 'B')";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, customer.getCustomerId());
 			pstmt.setInt(2, customer.getCustomerPw());
@@ -128,11 +127,39 @@ public class CustomerDAO extends DAO {
 			
 			result = pstmt.executeUpdate();
 			
-			if(result == 1) {
-				System.out.println("회원 등록 완료");
+			if(getCustomerList() != null) {
+				System.out.println("회원이 등록되었습니다.");
 			}else {
-				System.out.println("회원 등록 실패");
+				System.out.println("이미 있는 회원입니다.");
 			}
+			
+//			if(result == 1) {
+//				System.out.println("회원이 등록되었습니다.");
+//			}else {
+//				System.out.println("회원 등록을 하지못했습니다");
+//			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
+		return result;
+	}
+	
+	//회원 수정
+	public int customerUpdate(Customer customer) {
+		int result = 0;
+		try {
+			conn();
+			String sql = "UPDATE customer SET customer_pw = ?, customer_email = ? WHERE customer_id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, customer.getCustomerPw());
+			pstmt.setString(2, customer.getCustomerEmail());
+			pstmt.setInt(3, customer.getCustomerId());
+			
+			result = pstmt.executeUpdate();
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -159,9 +186,5 @@ public class CustomerDAO extends DAO {
 		}
 		return result;
 	}
-	
-	
-	
-	
 	
 }
