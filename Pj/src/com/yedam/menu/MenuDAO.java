@@ -63,12 +63,6 @@ public class MenuDAO extends DAO {
 			
 			result = pstmt.executeUpdate();
 			
-			if(result == 1) {
-				System.out.println("메뉴를 등록하였습니다.");
-			}else {
-				System.out.println("메뉴가 등록되지 못했습니다.");
-			}
-			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -95,7 +89,7 @@ public class MenuDAO extends DAO {
 		return result;
 	}
 	
-	//음식 판매
+	//음식 구매
 	public int salesMenu(Menu menu) {
 		int result = 0;
 		try {

@@ -34,11 +34,11 @@ public class MenuService {
 		
 		int result = MenuDAO.getInstance().insertMenu(menu);
 		
-//		if(result == 1) {
-//			System.out.println("메뉴 등록이 완료되었습니다.");
-//		}else {
-//			System.out.println("메뉴 등록이 되지않았습니다.");
-//		}
+		if(result == 1) {
+			System.out.println("메뉴 등록이 완료되었습니다.");
+		}else {
+			System.out.println("메뉴 등록이 되지않았습니다.");
+		}
 	}
 	
 	//메뉴 삭제
@@ -56,7 +56,7 @@ public class MenuService {
 		}
 	}
 	
-	//음식 판매
+	//음식 구매
 	public void salesMenu() {
 		Menu menu = new Menu();
 		String food = "";

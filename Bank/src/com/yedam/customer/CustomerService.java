@@ -50,7 +50,7 @@ public class CustomerService {
 		int customerId = Integer.parseInt(sc.nextLine());
 		System.out.println("PW>");
 		String customerPw = sc.nextLine();
-		System.out.println("이름 : >");
+		System.out.println("이름>");
 		String customerName = sc.nextLine();
 		
 		Customer customer = new Customer();

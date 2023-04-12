@@ -125,19 +125,7 @@ public class CustomerDAO extends DAO {
 			pstmt.setString(5, customer.getCustomerAdd());
 			pstmt.setString(6, customer.getCustomerNum());
 			
-			result = pstmt.executeUpdate();
-			
-			if(getCustomerList() != null) {
-				System.out.println("회원이 등록되었습니다.");
-			}else {
-				System.out.println("이미 있는 회원입니다.");
-			}
-			
-//			if(result == 1) {
-//				System.out.println("회원이 등록되었습니다.");
-//			}else {
-//				System.out.println("회원 등록을 하지못했습니다");
-//			}
+			result = pstmt.executeUpdate();	
 			
 		}catch(Exception e) {
 			e.printStackTrace();

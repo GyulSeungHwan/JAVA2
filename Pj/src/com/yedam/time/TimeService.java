@@ -33,11 +33,11 @@ public class TimeService {
 		
 		int result = TimeDAO.getInstance().insertTime(time);
 		
-//		if(result == 1) {
-//			System.out.println("시간제 등록이 완료되었습니다.");
-//		}else {
-//			System.out.println("시간제 등록이 되지않았습니다.");
-//		}
+		if(result == 1) {
+			System.out.println("시간제 등록이 완료되었습니다.");
+		}else {
+			System.out.println("시간제 등록이 되지않았습니다.");
+		}
 	}
 	
 	//시간제 삭제
@@ -55,7 +55,8 @@ public class TimeService {
 		}
 	}
 	
-	//시간제 판매
+	//시간제 구매
+	int timePoints = 0;
 	public void salesTime() {
 		Time time = new Time();
 		int Pt = 0;
@@ -72,10 +73,13 @@ public class TimeService {
 		int result = TimeDAO.getInstance().salesTime(time);
 		
 		if(result >= 1) {
-			System.out.println(Pt + "\t" + salesCount + " 건 구매 완료했습니다.");
+			System.out.println(Pt*salesCount + "시간 충전되었습니다.");
 		}else {
-			System.out.println("구매하지 못했습니다.");
+			System.out.println("시간제를 구매하지 못했습니다.");
 		}
+		
+		timePoints += (double) ((Pt*salesCount)*0.05);
+		System.out.println(timePoints);
 	}
 	
 }

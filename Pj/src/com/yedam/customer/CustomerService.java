@@ -3,6 +3,12 @@ package com.yedam.customer;
 import java.util.List;
 import java.util.Scanner;
 
+import com.yedam.menu.Menu;
+import com.yedam.menu.MenuDAO;
+import com.yedam.time.Time;
+import com.yedam.time.TimeDAO;
+import com.yedam.time.TimeService;
+
 public class CustomerService {
 	
 	public static Customer customerInfo = null;
@@ -83,9 +89,19 @@ public class CustomerService {
 //		CUSTOMER_EMAIL          VARCHAR2(30)
 //		CUSTOMER_ADD            VARCHAR2(100)
 //		CUSTOMER_NUM   NOT NULL VARCHAR2(20)
-//		CUSTOMER_GRADE          CHAR(1)
-		System.out.println("아이디>");
-		int customerId = Integer.parseInt(sc.nextLine());
+//		CUSTOMER_GRADE          CHAR(1)\
+		
+		int customerId = 0;
+		while(true) {
+			System.out.println("아이디>");
+			customerId = Integer.parseInt(sc.nextLine());
+			
+			if(CustomerDAO.getInstance().login(customerId)!=null) {
+				System.out.println("이미 있는 회원입니다");
+			}else {
+				break;
+			}
+		}
 		System.out.println("비밀번호>");
 		int customerPw = Integer.parseInt(sc.nextLine());
 		System.out.println("이름>");
@@ -106,7 +122,12 @@ public class CustomerService {
 		customer.setCustomerAdd(customerAdd);
 		customer.setCustomerNum(customerNum);
 		
-		CustomerDAO.getInstance().customerAdd(customer);
+		int result = CustomerDAO.getInstance().customerAdd(customer);
+		if(result == 1) {
+			System.out.println("회원이 등록되었습니다.");
+		}else {
+			System.out.println("회원을 등록하지 못했습니다.");
+		}
 		
 	}
 	
@@ -143,4 +164,60 @@ public class CustomerService {
 		}
 	}
 	
+	//내 정보 조회
+	public void getCustomer2() {
+		List<Customer> list = CustomerDAO.getInstance().getCustomerList();
+		for(Customer customer : list) {
+			if(CustomerService.customerInfo.getCustomerId() == customer.getCustomerId()) {
+				System.out.println("아이디 : " + customer.getCustomerId());
+				System.out.println("비밀번호 : " + customer.getCustomerPw());
+				System.out.println("이름 : " + customer.getCustomerName());
+				System.out.println("이메일 : " + customer.getCustomerEmail());
+				System.out.println("주소 : " + customer.getCustomerAdd());
+				System.out.println("전화번호 : " + customer.getCustomerNum());
+				System.out.println("남은 시간 : " + TimeService.timeInfo.salesTime());
+				System.out.println("포인트 : " );
+			}
+		}
+	}
+	
+	//매출
+	public void pcSales() {
+		System.out.println("===Kim's PC방 매출 내역===");
+		
+		List<Menu> list = MenuDAO.getInstance().getMenuList();
+		List<Time> list2 = TimeDAO.getInstance().getTimeList();
+		int totalSales = 0;
+		int menuSales = 0;
+		int timeSales = 0;
+		System.out.println("####################################");
+		for(Menu menu : list) {
+			System.out.println("음식 이름 : " + menu.getMenuName());
+			System.out.println("음식 가격 : " + menu.getMenuPrice());
+			System.out.println("판매 수량 : " + menu.getMenuSales());
+			System.out.println("판매 금액 : " + (menu.getMenuPrice()*
+					menu.getMenuSales()) + "원");
+			
+			menuSales += (menu.getMenuPrice()*menu.getMenuSales());
+			System.out.println("####################################");
+		}
+		System.out.println("음식 판매 금액 : " + menuSales + "원");
+		
+		System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+		for(Time time : list2) {
+			System.out.println("시간제 이름 : " + time.getTimeName());
+			System.out.println("시간제 가격 : " + time.getTimePrice());
+			System.out.println("판매 시간 : " + time.getTimeSales());
+			System.out.println("판매 금액 : " + (time.getTimePrice()*
+					time.getTimeSales()) + "원");
+			
+			timeSales += (time.getTimePrice()*time.getTimeSales());
+			System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+		}
+		System.out.println("시간제 판매 금액 : " + timeSales + "원");
+		
+		totalSales = menuSales + timeSales;
+		System.out.println("총 판매 금액 : " + totalSales + "원");
+	}
+
 }

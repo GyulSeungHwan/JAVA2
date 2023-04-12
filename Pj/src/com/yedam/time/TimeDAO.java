@@ -63,12 +63,6 @@ public class TimeDAO extends DAO {
 			
 			result = pstmt.executeUpdate();
 			
-			if(result == 1) {
-				System.out.println("시간제를 등록하였습니다.");
-			}else {
-				System.out.println("시간제가 등록되지 못했습니다.");
-			}
-			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -95,7 +89,7 @@ public class TimeDAO extends DAO {
 		return result;
 	}
 	
-	//시간제 판매
+	//시간제 구매
 	public int salesTime(Time time) {
 		int result = 0;
 		try {
