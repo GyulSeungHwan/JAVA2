@@ -3,6 +3,10 @@ package com.yedam.menu;
 import java.util.List;
 import java.util.Scanner;
 
+import com.yedam.customer.Customer;
+import com.yedam.customer.CustomerDAO;
+import com.yedam.customer.CustomerService;
+
 public class MenuService {
 	
 	public static Menu menuInfo = null;
@@ -56,16 +60,19 @@ public class MenuService {
 		}
 	}
 	
-	//음식 구매
+	//음식 구매, 포인트 쌓기
 	public void salesMenu() {
 		Menu menu = new Menu();
 		String food = "";
 		int salesCount = 0;
+		double Mp = 0;
 		
 		System.out.println("구매할 메뉴>");
 		food = sc.nextLine();
 		System.out.println("구매할 수량>");
 		salesCount = Integer.parseInt(sc.nextLine());
+		
+		Menu menu2 = MenuDAO.getInstance().getMenu(food);
 		
 		menu.setMenuName(food);
 		menu.setMenuSales(salesCount);
@@ -73,7 +80,16 @@ public class MenuService {
 		int result = MenuDAO.getInstance().salesMenu(menu);
 		
 		if(result >= 1) {
+			Mp = (double) (menu2.getMenuPrice()*salesCount)*0.001;
+//			System.out.println(Mp);
 			System.out.println(food + "\t" + salesCount + "개 구매 완료했습니다.");
+//			CustomerDAO.getInstance().getPoints(Mp);
+			int result2 = CustomerDAO.getInstance().getPoints(Mp);
+			if(result2 > 0) {
+				System.out.println(Mp + "포인트가 쌓였습니다.");
+			}else {
+				System.out.println("포인트가 쌓이지 않았습니다.");
+			}
 		}else {
 			System.out.println("구매하지 못했습니다.");
 		}

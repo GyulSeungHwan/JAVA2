@@ -1,17 +1,20 @@
 package com.yedam.customer;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-
+import java.util.concurrent.TimeUnit;
 import com.yedam.menu.Menu;
 import com.yedam.menu.MenuDAO;
 import com.yedam.time.Time;
 import com.yedam.time.TimeDAO;
 import com.yedam.time.TimeService;
 
+
 public class CustomerService {
-	
+	public static long time = 0;
 	public static Customer customerInfo = null;
+	TimeService ts = new TimeService();
 	Scanner sc = new Scanner(System.in);
 	
 	
@@ -30,6 +33,9 @@ public class CustomerService {
 			if(pw == customer.getCustomerPw()) {
 				System.out.println("로그인 성공");
 				customerInfo = customer;
+				Date start = new Date();
+				long startTime = TimeUnit.MILLISECONDS.toSeconds(start.getTime());
+				CustomerService.time=startTime;
 			}else {
 				System.out.println("비밀번호가 맞지않습니다.");
 			}
@@ -41,10 +47,23 @@ public class CustomerService {
 	
 	public void logout() {
 		if(customerInfo != null) {
-			customerInfo = null;
-			System.out.println("로그아웃되었습니다.");
+			while(true) {
+			Date now = new Date();
+			long nowTime = TimeUnit.MILLISECONDS.toSeconds(now.getTime());
+			long useTime = (nowTime - CustomerService.time);
+			if((CustomerService.customerInfo.getStartTime()*60*60) - useTime < 0 && CustomerService.customerInfo.getCustomerGrade().equals("B")) {
+				System.out.println("시간을 구매해주세요.");
+				System.out.println("1시간 | 2시간 | 5시간 | 11시간");
+				ts.salesTime();
+			}else {
+//				TimeDAO.getInstance().startTime(-Math.ceil(useTime/(60)));
+				customerInfo = null;
+				System.out.println("로그아웃되었습니다.");
+				break;
+			}
 		}
 	}
+}
 	
 	//전체 조회
 	public void getCustomerList() {
@@ -77,6 +96,7 @@ public class CustomerService {
 			System.out.println("회원 이메일 : " + customer.getCustomerEmail());
 			System.out.println("회원 주소 : " + customer.getCustomerAdd());
 			System.out.println("회원 전화번호 : " + customer.getCustomerNum());
+			System.out.println("포인트 : " + customer.getCustomerPoint());
 			
 		}
 	}
@@ -167,6 +187,9 @@ public class CustomerService {
 	//내 정보 조회
 	public void getCustomer2() {
 		List<Customer> list = CustomerDAO.getInstance().getCustomerList();
+		Date now = new Date();
+		long nowTime = TimeUnit.MILLISECONDS.toSeconds(now.getTime());
+		long useTime = (nowTime - CustomerService.time);
 		for(Customer customer : list) {
 			if(CustomerService.customerInfo.getCustomerId() == customer.getCustomerId()) {
 				System.out.println("아이디 : " + customer.getCustomerId());
@@ -175,8 +198,8 @@ public class CustomerService {
 				System.out.println("이메일 : " + customer.getCustomerEmail());
 				System.out.println("주소 : " + customer.getCustomerAdd());
 				System.out.println("전화번호 : " + customer.getCustomerNum());
-				System.out.println("남은 시간 : " + TimeService.timeInfo.salesTime());
-				System.out.println("포인트 : " );
+				System.out.println("남은 시간(초) : " + ((customer.getStartTime()*60*60)-useTime));
+				System.out.println("포인트 : " + customer.getCustomerPoint());
 			}
 		}
 	}
@@ -205,7 +228,7 @@ public class CustomerService {
 		
 		System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 		for(Time time : list2) {
-			System.out.println("시간제 이름 : " + time.getTimeName());
+			System.out.println("시간제 : " + time.getTimeName());
 			System.out.println("시간제 가격 : " + time.getTimePrice());
 			System.out.println("판매 시간 : " + time.getTimeSales());
 			System.out.println("판매 금액 : " + (time.getTimePrice()*
@@ -219,5 +242,5 @@ public class CustomerService {
 		totalSales = menuSales + timeSales;
 		System.out.println("총 판매 금액 : " + totalSales + "원");
 	}
-
+	
 }

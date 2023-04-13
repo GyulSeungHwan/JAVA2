@@ -8,7 +8,7 @@ public class Application {
 	
 	Scanner sc = new Scanner(System.in);
 	CustomerService cs = new CustomerService();
-	int menuNo = 0;
+	String menuNo = "";
 	public Application() {
 		run();
 	}
@@ -16,14 +16,14 @@ public class Application {
 	private void run() {
 		while(true) {
 			System.out.println("1.로그인 | 2.종료");
-			menuNo = Integer.parseInt(sc.nextLine());
+			menuNo = sc.nextLine();
 			
-			if(menuNo == 1) {
+			if(menuNo.equals("1")) {
 				cs.login();
 				if(CustomerService.customerInfo != null) {
 					new ManageMent();
 				}
-			}else if(menuNo == 2) {
+			}else if(menuNo.equals("2")) {
 				System.out.println("프로그램 종료");
 				break;
 			}

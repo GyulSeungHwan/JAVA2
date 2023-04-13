@@ -16,6 +16,8 @@ public class Customer {
 	private String customerAdd;
 	private String customerNum;
 	private String customerGrade;
+	private long startTime;
+	private double customerPoint;
 	
 	public int getCustomerId() {
 		return customerId;
@@ -58,6 +60,18 @@ public class Customer {
 	}
 	public void setCustomerGrade(String customerGrade) {
 		this.customerGrade = customerGrade;
+	}
+	public long getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
+	public double getCustomerPoint() {
+		return customerPoint;
+	}
+	public void setCustomerPoint(double customerPoint) {
+		this.customerPoint = customerPoint;
 	}
 	
 }

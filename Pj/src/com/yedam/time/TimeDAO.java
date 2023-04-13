@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.common.DAO;
+import com.yedam.customer.CustomerService;
 
 public class TimeDAO extends DAO {
 	
@@ -56,7 +57,7 @@ public class TimeDAO extends DAO {
 		int result = 0;
 		try {
 			conn();
-			String sql = "INSERT INTO time VALUES (?, ?, null)";
+			String sql = "INSERT INTO time VALUES (?, ?, 0)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, time.getTimeName());
 			pstmt.setInt(2, time.getTimePrice());
@@ -111,4 +112,46 @@ public class TimeDAO extends DAO {
 		return result;
 	}
 	
+	//시간제의 가격을 가져오는 것
+	public Time getTime(int Pt) {
+		Time time2 = null;
+		try {
+			conn();
+			String sql = "SELECT * FROM time WHERE time_name = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Pt);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				time2 = new Time();
+				time2.setTimePrice(rs.getInt("time_price"));
+				time2.setTimeName(rs.getInt("time_name"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
+		return time2;
+	}
+	
+	public int startTime(double time) {
+		int result = 0;
+		try {
+			conn();
+			String sql = "UPDATE customer SET customer_startTime = customer_startTime + ? WHERE customer_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setDouble(1, time);
+			pstmt.setInt(2, CustomerService.customerInfo.getCustomerId());
+			
+			result = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
+		
+		return result;
+	}
 }

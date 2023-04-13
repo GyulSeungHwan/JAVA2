@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.common.DAO;
+import com.yedam.menu.MenuService;
+import com.yedam.time.TimeService;
 
 public class CustomerDAO extends DAO {
 	
@@ -37,6 +39,7 @@ public class CustomerDAO extends DAO {
 				customer.setCustomerPw(rs.getInt("customer_pw"));
 				customer.setCustomerName(rs.getString("customer_name"));
 				customer.setCustomerGrade(rs.getString("customer_grade"));
+				customer.setStartTime(rs.getLong("customer_startTime"));
 			}
 			
 		}catch(Exception e) {
@@ -71,6 +74,8 @@ public class CustomerDAO extends DAO {
 				customer.setCustomerAdd(rs.getString("customer_add"));
 				customer.setCustomerNum(rs.getString("customer_num"));
 				customer.setCustomerGrade(rs.getString("customer_grade"));
+				customer.setStartTime(rs.getLong("customer_startTime"));
+				customer.setCustomerPoint(rs.getDouble("customer_point"));
 				
 				list.add(customer);
 			}
@@ -101,6 +106,8 @@ public class CustomerDAO extends DAO {
 				customer.setCustomerEmail(rs.getString("customer_email"));
 				customer.setCustomerAdd(rs.getString("customer_add"));
 				customer.setCustomerNum(rs.getString("customer_num"));
+				customer.setStartTime(rs.getLong("customer_startTime"));
+				customer.setCustomerPoint(rs.getDouble("customer_point"));
 			}
 			
 		}catch(Exception e) {
@@ -116,7 +123,7 @@ public class CustomerDAO extends DAO {
 		int result = 0;
 		try {
 			conn();
-			String sql = "INSERT INTO customer VALUES (?, ?, ?, ?, ?, ?, 'B')";
+			String sql = "INSERT INTO customer VALUES (?, ?, ?, ?, ?, ?, 'B', 0)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, customer.getCustomerId());
 			pstmt.setInt(2, customer.getCustomerPw());
@@ -175,4 +182,24 @@ public class CustomerDAO extends DAO {
 		return result;
 	}
 	
+	//회원 포인트 쌓기
+	public int getPoints(double point) {
+		int result = 0;
+		try {
+			conn();
+			String sql = "UPDATE customer SET customer_point = customer_point + ? WHERE customer_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setDouble(1, point);
+			pstmt.setInt(2, CustomerService.customerInfo.getCustomerId());
+			
+			result = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
+		
+		return result;
+	}
 }

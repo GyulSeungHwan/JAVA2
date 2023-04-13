@@ -111,4 +111,26 @@ public class MenuDAO extends DAO {
 		return result;
 	}
 	
+	//메뉴 이름의 가격을 가져오는 것
+	public Menu getMenu(String food) {
+		Menu menu = null;
+		try {
+			conn();
+			String sql = "SELECT * FROM menu WHERE menu_name = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, food);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				menu = new Menu();
+				menu.setMenuPrice(rs.getInt("menu_price"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			disconn();
+		}
+		return menu;
+	}
+	
 }
