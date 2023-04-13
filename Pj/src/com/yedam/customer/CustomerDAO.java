@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yedam.common.DAO;
-import com.yedam.menu.MenuService;
-import com.yedam.time.TimeService;
 
 public class CustomerDAO extends DAO {
 	
@@ -123,7 +121,7 @@ public class CustomerDAO extends DAO {
 		int result = 0;
 		try {
 			conn();
-			String sql = "INSERT INTO customer VALUES (?, ?, ?, ?, ?, ?, 'B', 0)";
+			String sql = "INSERT INTO customer VALUES (?, ?, ?, ?, ?, ?, 'B', 0, 0)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, customer.getCustomerId());
 			pstmt.setInt(2, customer.getCustomerPw());
