@@ -2,10 +2,7 @@ package com.yedam.menu;
 
 import java.util.List;
 import java.util.Scanner;
-
-import com.yedam.customer.Customer;
 import com.yedam.customer.CustomerDAO;
-import com.yedam.customer.CustomerService;
 
 public class MenuService {
 	

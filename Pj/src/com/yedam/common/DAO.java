@@ -1,10 +1,12 @@
 package com.yedam.common;
 
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Properties;
 
 public class DAO {
 	//DAO -> Data Access Object
@@ -27,17 +29,19 @@ public class DAO {
 	protected Statement stmt = null;
 	
 	//DB 접속 정보
-	String driver = "oracle.jdbc.driver.OracleDriver";
+	Properties pro = new Properties();
+	String driver = "";
 	
-	String url = "jdbc:oracle:thin:@localhost:1521:xe";
+	String url = "";
 	//localhost -> 접속할 아이디
 	//1521 -> PORT(DB서버에 들어가기 위해 가진 값)
 	//xe -> SID
-	String id = "pj";
-	String pw = "pj";
+	String id = "";
+	String pw = "";
 	
 	//DB 연결
 	public void conn() {
+		getProperties();
 		try {
 			//1. 드라이버 로딩
 			Class.forName(driver);
@@ -69,7 +73,17 @@ public class DAO {
 		}
 	}
 	
-	
-	
-	
+	private void getProperties() {
+		try {
+			FileReader resource = new FileReader("db.properties");
+			pro.load(resource);
+			
+			driver = pro.getProperty("driver");
+			url = pro.getProperty("url");
+			id = pro.getProperty("id");
+			pw = pro.getProperty("pw");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

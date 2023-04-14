@@ -77,7 +77,7 @@ public class TimeService {
 		time.setTimeSales(salesCount);
 		
 		int result = TimeDAO.getInstance().salesTime(time);
-		int result2 = TimeDAO.getInstance().startTime(time2.getTimeName());
+		int result2 = TimeDAO.getInstance().startTime(time2.getTimeName()*60*60);
 		
 		if(result2 > 0) {
 			System.out.println(time2.getTimeName()*salesCount + "시간이 충전되었습니다.");

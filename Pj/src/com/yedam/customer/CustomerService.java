@@ -35,7 +35,7 @@ public class CustomerService {
 				customerInfo = customer;
 				Date start = new Date();
 				long startTime = TimeUnit.MILLISECONDS.toSeconds(start.getTime());
-				CustomerService.time=startTime;
+				CustomerService.time = startTime;
 			}else {
 				System.out.println("비밀번호가 맞지않습니다.");
 			}
@@ -48,22 +48,22 @@ public class CustomerService {
 	public void logout() {
 		if(customerInfo != null) {
 			while(true) {
-			Date now = new Date();
-			long nowTime = TimeUnit.MILLISECONDS.toSeconds(now.getTime());
-			long useTime = (nowTime - CustomerService.time);
-			if((CustomerService.customerInfo.getStartTime()*60*60) - useTime < 0 && CustomerService.customerInfo.getCustomerGrade().equals("B")) {
-				System.out.println("시간을 구매해주세요.");
-				System.out.println("1시간 | 2시간 | 5시간 | 11시간");
-				ts.salesTime();
-			}else {
-//				TimeDAO.getInstance().startTime(-Math.ceil(useTime/(60)));
-				customerInfo = null;
-				System.out.println("로그아웃되었습니다.");
-				break;
+				Date now = new Date();
+				long nowTime = TimeUnit.MILLISECONDS.toSeconds(now.getTime());
+				long useTime = (nowTime - CustomerService.time);
+				if((CustomerService.customerInfo.getStartTime()*60) - useTime < 0 && CustomerService.customerInfo.getCustomerGrade().equals("B")) {
+					System.out.println("후불제로 변경되어 로그아웃 되지않습니다. \n시간을 구매해주세요.");
+					ts.getTimeList();
+					ts.salesTime();
+				}else {
+					TimeDAO.getInstance().startTime(-Math.ceil((useTime)));
+					customerInfo = null;
+					System.out.println("로그아웃되었습니다.");
+					break;
+				}
 			}
 		}
 	}
-}
 	
 	//전체 조회
 	public void getCustomerList() {
@@ -75,6 +75,7 @@ public class CustomerService {
 			System.out.println("이메일 : " + list.get(i).getCustomerEmail());
 			System.out.println("주소 : " + list.get(i).getCustomerAdd());
 			System.out.println("전화번호 : " + list.get(i).getCustomerNum());
+			System.out.println("포인트 : " + list.get(i).getCustomerPoint());
 			System.out.println("==============================================");
 				
 		}
@@ -96,6 +97,7 @@ public class CustomerService {
 			System.out.println("회원 이메일 : " + customer.getCustomerEmail());
 			System.out.println("회원 주소 : " + customer.getCustomerAdd());
 			System.out.println("회원 전화번호 : " + customer.getCustomerNum());
+			System.out.println("남은 시간 : " + customer.getStartTime()/60 + "분");
 			System.out.println("포인트 : " + customer.getCustomerPoint());
 			
 		}
@@ -198,7 +200,7 @@ public class CustomerService {
 				System.out.println("이메일 : " + customer.getCustomerEmail());
 				System.out.println("주소 : " + customer.getCustomerAdd());
 				System.out.println("전화번호 : " + customer.getCustomerNum());
-				System.out.println("남은 시간(초) : " + ((customer.getStartTime()*60*60)-useTime));
+				System.out.println("남은 시간(초) : " + ((customer.getStartTime()) - useTime));
 				System.out.println("포인트 : " + customer.getCustomerPoint());
 			}
 		}
